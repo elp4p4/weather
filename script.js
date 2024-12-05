@@ -8,7 +8,6 @@ const humidity = document.getElementById("humidity");
 const windSpeed = document.getElementById("wind-speed");
 const errorMessage = document.getElementById("error-message");
 
-
 const apiKey = '52414743edec5adf10d96a61fb9d3c79';
 
 function getWeather(city) {
@@ -34,7 +33,7 @@ function getWeather(city) {
 
 function displayWeather(data) {
     locationElement.textContent = `${data.name}, ${data.sys.country}`;
-    temperature.textContent = `Temperature: ${data.main.temp}°C`;
+    temperature.textContent = `Temperature: ${Math.round(data.main.temp)}°C`;
     description.textContent = `Description: ${data.weather[0].description}`;
     humidity.textContent = `Humidity: ${data.main.humidity}%`;
     windSpeed.textContent = `Wind Speed: ${data.wind.speed} m/s`;
@@ -49,11 +48,24 @@ function showError(message) {
     weatherInfo.style.display = 'none';
 }
 
+// Event listener for the search button click
 searchButton.addEventListener("click", () => {
     const city = cityInput.value.trim();
     if (city) {
         getWeather(city);
     } else {
         showError("Please enter a city name.");
+    }
+});
+
+// Event listener for pressing the Enter key
+cityInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+        const city = cityInput.value.trim();
+        if (city) {
+            getWeather(city);
+        } else {
+            showError("Please enter a city name.");
+        }
     }
 });
